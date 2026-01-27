@@ -1,8 +1,8 @@
 {
-  "name": "ent-ecole-maternelle",
-  "displayName": "Ent ecole maternelle",
-  "version": "0.5",
-  "description": "Système automatisé pour les professeurs en vue d'une connexion facilitée sur le site ENT-École par les élèves en maternelle. Idée proposée par Valentin Servidio (Frontignan)",
+  "name": "ent-ecole-connexion",
+  "displayName": "ENT-École : Connexion Rapide",
+  "version": "0.5.0",
+  "description": "Connexion automatique pour les élèves de maternelle via liens magiques ou QR Codes.",
   "author": "Marc Galindo",
   "scripts": {
     "dev": "plasmo dev",
@@ -10,13 +10,12 @@
     "package": "plasmo package"
   },
   "dependencies": {
-    "plasmo": "0.90.5",
+    "plasmo": "0.89.0",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
-    "@ianvs/prettier-plugin-sort-imports": "4.1.1",
-    "@types/chrome": "0.0.258",
+    "@plasmohq/prettier-plugin-plasmo": "0.1.2",
     "@types/node": "20.11.5",
     "@types/react": "18.2.48",
     "@types/react-dom": "18.2.18",
@@ -25,7 +24,12 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
-    ]
+      "https://www.ent-ecole.fr/*"
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "ent-ecole-login@example.com"
+      }
+    }
   }
 }
