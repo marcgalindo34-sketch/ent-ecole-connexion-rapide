@@ -17,15 +17,20 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Force Install Dependencies
+      - name: Smart Install Dependencies
         run: |
           if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
-          # On supprime le verrou pour éviter les conflits
+          # Nettoyage préventif
           rm -f package-lock.json
-          # LA CORRECTION EST ICI :
-          # --omit=optional : Ne pas télécharger les outils optionnels
-          # --ignore-scripts : Ne pas essayer de compiler le code C++ (ce qui plantait)
-          npm install --omit=optional --ignore-scripts
+          rm -rf node_modules
+
+          # ÉTAPE 1 : On installe tout le projet SANS les scripts
+          # Cela empêche @parcel/watcher de planter
+          npm install --ignore-scripts
+
+          # ÉTAPE 2 : On répare spécifiquement SHARP
+          # On force l'installation de la version Linux (x64) explicitement
+          npm install --os=linux --cpu=x64 sharp
 
       - name: Build the extension
         run: |
