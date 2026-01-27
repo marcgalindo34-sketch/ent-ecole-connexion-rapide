@@ -17,13 +17,15 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Clean Install Dependencies
+      - name: Force Install Dependencies
         run: |
           if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
-          # 1. On supprime le fichier de verrouillage qui cause souvent des conflits
+          # On supprime le verrou pour éviter les conflits
           rm -f package-lock.json
-          # 2. On installe sans les modules optionnels (comme le watcher qui plante)
-          npm install --no-optional
+          # LA CORRECTION EST ICI :
+          # --omit=optional : Ne pas télécharger les outils optionnels
+          # --ignore-scripts : Ne pas essayer de compiler le code C++ (ce qui plantait)
+          npm install --omit=optional --ignore-scripts
 
       - name: Build the extension
         run: |
