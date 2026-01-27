@@ -1,7 +1,7 @@
 {
   "name": "ent-ecole-maternelle",
   "displayName": "Ent ecole maternelle",
-  "version": "0.0.1",
+  "version": "0.5",
   "description": "Système automatisé pour les professeurs en vue d'une connexion facilitée sur le site ENT-École par les élèves en maternelle. Idée proposée par Valentin Servidio (Frontignan)",
   "author": "Marc Galindo",
   "scripts": {
