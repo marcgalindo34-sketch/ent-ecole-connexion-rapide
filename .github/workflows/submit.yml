@@ -25,10 +25,18 @@ jobs:
       - name: Build the extension
         run: |
           if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
-          # 1. On construit pour Chrome (par défaut)
+          # Build Chrome
           npm run build
-          # 2. On construit EXPLICITEMENT pour Firefox (la ligne ajoutée)
+          # Build Firefox
           npm run build -- --target=firefox-mv2
+
+      # NOUVEAU : On crée le ZIP manuellement pour éviter le problème de dossier
+      - name: Zip Firefox Build Correctly
+        run: |
+          # On va dans le dossier, et on zippe le contenu (.)
+          if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
+          cd build/firefox-mv2-prod
+          zip -r ../firefox-FINAL.zip .
 
       - name: Upload Chrome Artifact
         uses: actions/upload-artifact@v4
@@ -41,7 +49,8 @@ jobs:
       - name: Upload Firefox Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: firefox-extension
+          name: firefox-extension-FINAL
+          # On télécharge le ZIP qu'on vient de créer proprement
           path: |
-            build/firefox-mv2-prod
-            ent-ecole-maternelle/build/firefox-mv2-prod
+            build/firefox-FINAL.zip
+            ent-ecole-maternelle/build/firefox-FINAL.zip
