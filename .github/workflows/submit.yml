@@ -17,7 +17,6 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      # ATTENTION : Si votre code est dans un sous-dossier, on entre dedans
       - name: Install dependencies
         run: |
           if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
@@ -26,7 +25,10 @@ jobs:
       - name: Build the extension
         run: |
           if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
+          # 1. On construit pour Chrome (par défaut)
           npm run build
+          # 2. On construit EXPLICITEMENT pour Firefox (la ligne ajoutée)
+          npm run build -- --target=firefox-mv2
 
       - name: Upload Chrome Artifact
         uses: actions/upload-artifact@v4
