@@ -1,25 +1,45 @@
 name: "Build Extension"
+
 on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 20
           cache: "npm"
+
+      # ATTENTION : Si votre code est dans un sous-dossier, on entre dedans
       - name: Install dependencies
-        run: npm install
+        run: |
+          if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
+          npm install
+
       - name: Build the extension
-        run: npm run build
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v3
+        run: |
+          if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
+          npm run build
+
+      - name: Upload Chrome Artifact
+        uses: actions/upload-artifact@v4
         with:
-          name: extension-builds
-          path: build/
+          name: chrome-extension
+          path: |
+            build/chrome-mv3-prod
+            ent-ecole-maternelle/build/chrome-mv3-prod
+
+      - name: Upload Firefox Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firefox-extension
+          path: |
+            build/firefox-mv2-prod
+            ent-ecole-maternelle/build/firefox-mv2-prod
