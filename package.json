@@ -27,7 +27,13 @@
     ],
     "browser_specific_settings": {
       "gecko": {
-        "id": "ent-ecole-login@example.com"
+        "id": "ent-ecole-login@example.com",
+        "strict_min_version": "58.0",
+        "data_collection_permissions": {
+          "ip_address": false,
+          "browser_activity": false,
+          "cookies": false
+        }
       }
     }
   }

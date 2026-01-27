@@ -1,63 +1,41 @@
-name: "Build Extension"
-
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
-
-      - name: Smart Install Dependencies
-        run: |
-          if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
-          # Nettoyage préventif
-          rm -f package-lock.json
-          rm -rf node_modules
-
-          # ÉTAPE 1 : On installe tout le projet SANS les scripts
-          # Cela empêche @parcel/watcher de planter
-          npm install --ignore-scripts
-
-          # ÉTAPE 2 : On répare spécifiquement SHARP
-          # On force l'installation de la version Linux (x64) explicitement
-          npm install --os=linux --cpu=x64 sharp
-
-      - name: Build the extension
-        run: |
-          if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
-          # Build Chrome
-          npm run build
-          # Build Firefox
-          npm run build -- --target=firefox-mv2
-
-      - name: Zip Firefox Build Correctly
-        run: |
-          if [ -d "ent-ecole-maternelle" ]; then cd ent-ecole-maternelle; fi
-          cd build/firefox-mv2-prod
-          zip -r ../firefox-FINAL.zip .
-
-      - name: Upload Chrome Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: chrome-extension
-          path: |
-            build/chrome-mv3-prod
-            ent-ecole-maternelle/build/chrome-mv3-prod
-
-      - name: Upload Firefox Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: firefox-extension-FINAL
-          path: |
-            build/firefox-FINAL.zip
-            ent-ecole-maternelle/build/firefox-FINAL.zip
+{
+  "name": "ent-ecole-connexion",
+  "displayName": "ENT-École : Connexion Rapide",
+  "version": "0.5.0",
+  "description": "Connexion automatique pour les élèves de maternelle via liens magiques ou QR Codes.",
+  "author": "Marc Galindo",
+  "scripts":
+    {
+      "dev": "plasmo dev",
+      "build": "plasmo build",
+      "package": "plasmo package"
+    },
+  "dependencies":
+    { "plasmo": "0.89.0", "react": "18.2.0", "react-dom": "18.2.0" },
+  "devDependencies":
+    {
+      "@types/node": "20.11.5",
+      "@types/react": "18.2.48",
+      "@types/react-dom": "18.2.18",
+      "prettier": "3.2.4",
+      "typescript": "5.3.3"
+    },
+  "manifest":
+    {
+      "host_permissions": ["https://www.ent-ecole.fr/*"],
+      "browser_specific_settings":
+        {
+          "gecko":
+            {
+              "id": "ent-ecole-login@example.com",
+              "strict_min_version": "58.0",
+              "data_collection_permissions":
+                {
+                  "ip_address": false,
+                  "browser_activity": false,
+                  "cookies": false
+                }
+            }
+        }
+    }
+}
