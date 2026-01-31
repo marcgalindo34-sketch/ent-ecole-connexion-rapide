@@ -2,7 +2,7 @@
   "name": "ent-ecole-connexion",
   "displayName": "ENT-École : Connexion Rapide",
   "version": "0.6.0",
-  "description": "Connexion automatique pour les élèves de maternelle via liens magiques ou QR Codes.",
+  "description": "Connexion automatique pour les élèves de maternelle via liens magiques sur l'ENT-École.",
   "author": "Marc Galindo",
   "scripts": {
     "dev": "plasmo dev",
