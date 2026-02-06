@@ -1,4 +1,4 @@
-# ENT-École : Connexion Rapide (Maternelle & CP)
+# ENT-École : Connexion Rapide 
 
 ![Privacy Focused](https://img.shields.io/badge/Privacy-100%25%20Local-green.svg)
 ![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-red.svg)
@@ -8,7 +8,7 @@
 
 Ce projet open-source permet aux enseignants de générer un tableau de bord local (Trombinoscope). Les élèves cliquent sur leur photo, et l'extension remplit automatiquement les identifiants via des paramètres URL sécurisés.
 
-🔗 **Site Officiel & Documentation :** [marcgalindo.fr/ent-maternelle](https://www.marcgalindo.fr/ent-maternelle/)
+🔗 **Site Officiel & Documentation :** [marcgalindo.fr/ent-ecole-connexion-rapide](https://marcgalindo.fr/ent-ecole-connexion-rapide/)
 
 ---
 
@@ -53,8 +53,8 @@ Ce projet utilise le framework **Plasmo** (React + TypeScript). Si vous êtes un
 ### Instructions de compilation
 ```bash
 # 1. Cloner le projet
-git clone [https://github.com/marcgalindo34-sketch/ent-ecole-maternelle.git](https://github.com/marcgalindo34-sketch/ent-ecole-maternelle.git)
-cd ent-ecole-maternelle
+git clone [https://github.com/marcgalindo34-sketch/ent-ecole-connexion-rapide](https://github.com/marcgalindo34-sketch/ent-ecole-connexion-rapide)
+cd ent-ecole-connexion-rapide
 
 # 2. Installer les dépendances
 npm install
