@@ -1,5 +1,6 @@
 {
-  "name": "ent-ecole-connexion",
+  "name": "ent-ecole-connexion-rapide",
+  "displayName": "ENT-École : Connexion Rapide",
   "version": "0.7.7",
   "license": "CC-BY-NC-SA-4.0",
   "author": {
