@@ -1,9 +1,11 @@
 {
   "name": "ent-ecole-connexion",
-  "displayName": "ENT-École : Connexion Rapide",
-  "version": "0.6.0",
-  "description": "Connexion automatique pour les élèves de maternelle via liens magiques sur l'ENT-École.",
-  "author": "Marc Galindo",
+  "version": "0.7.7",
+  "license": "CC-BY-NC-SA-4.0",
+  "author": {
+    "name": "Marc Galindo",
+    "url": "https://www.marcgalindo.fr"
+  },
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",

@@ -20,7 +20,7 @@ function sendCharacter(element, char) {
 // 3. LOGIQUE PRINCIPALE
 window.addEventListener('load', function () {
     const page_en_cours = window.location.href;
-    console.log("Plasmo Content Script Active sur :", page_en_cours);
+    
 
     if (page_en_cours.includes("/auth/login")) {
         // Petit délai de sécurité si le framework React est lent à afficher les champs

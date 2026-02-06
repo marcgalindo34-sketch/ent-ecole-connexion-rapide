@@ -1,4 +1,3 @@
-
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -11,6 +10,7 @@
 
 # misc
 .DS_Store
+Thumbs.db
 *.pem
 
 # debug
@@ -19,15 +19,23 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
-.env*.local
+# local env files (SECURITE MAXIMALE)
+.env
+.env.local
+.env.*.local
 
+# build artifacts
 out/
 build/
 dist/
 
-# plasmo
+# plasmo specific
 .plasmo
+.plasmo/*
 
 # typescript
 .tsbuildinfo
+
+# Editeurs (Optionnel mais propre)
+.vscode
+.idea
