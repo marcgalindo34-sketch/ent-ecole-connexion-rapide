@@ -2,11 +2,10 @@
   "name": "ent-ecole-connexion-rapide",
   "displayName": "ENT-École : Connexion Rapide",
   "version": "0.7.7",
+  "description": "Connexion simplifiée à l'ENT Ecole via un tableau de bord local généré par l'enseignant.",
   "license": "CC-BY-NC-SA-4.0",
-  "author": {
-    "name": "Marc Galindo",
-    "url": "https://www.marcgalindo.fr"
-  },
+  "author": "Marc Galindo <contact@marcgalindo.fr>",
+  "homepage": "https://marcgalindo.fr/ent-ecole-connexion-rapide/",
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
@@ -30,7 +29,7 @@
     ],
     "browser_specific_settings": {
       "gecko": {
-        "id": "ent-ecole-login@example.com",
+        "id": "ent-connexion-rapide@marcgalindo.fr",
         "strict_min_version": "58.0"
       }
     }
