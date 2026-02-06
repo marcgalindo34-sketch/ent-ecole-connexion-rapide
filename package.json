@@ -29,7 +29,7 @@
     ],
     "browser_specific_settings": {
       "gecko": {
-        "id": "ent-connexion-rapide@marcgalindo.fr",
+        "id": "ent-ecole-login@example.com",
         "strict_min_version": "58.0"
       }
     }
