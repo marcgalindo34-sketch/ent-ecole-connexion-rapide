@@ -1,62 +1,98 @@
 import type { PlasmoCSConfig } from "plasmo"
 
-// 1. CONFIGURATION : C'est ici qu'on dit à Chrome/Firefox où ce script doit s'activer
-// Remplace la section "content_scripts" de votre ancien manifest.json
+// Activation du content script uniquement sur l’ENT
 export const config: PlasmoCSConfig = {
   matches: ["https://www.ent-ecole.fr/*"],
-  run_at: "document_idle" // Plus besoin de setTimeout arbitraire, on attend que la page soit calme
+  run_at: "document_idle"
 }
 
-// 2. VOTRE FONCTION UTILITAIRE (inchangée)
-function sendCharacter(element, char) {
-    var keydownEvent = new KeyboardEvent('keydown', { key: char, code: 'Key' + char.toUpperCase(), keyCode: char.charCodeAt(0), charCode: char.charCodeAt(0), which: char.charCodeAt(0), bubbles: true, cancelable: true });
-    element.dispatchEvent(keydownEvent);
-    // ... (le reste de vos événements pour simuler la frappe)
-    var inputEvent = new InputEvent('input', { bubbles: true, cancelable: true, data: char, inputType: 'insertText' });
-    element.value += char;
-    element.dispatchEvent(inputEvent);
+// Simulation réaliste de frappe clavier
+function sendCharacter(element: HTMLInputElement, char: string) {
+  const keyCode = char.charCodeAt(0)
+
+  const keydownEvent = new KeyboardEvent("keydown", {
+    key: char,
+    code: "Key" + char.toUpperCase(),
+    keyCode,
+    charCode: keyCode,
+    which: keyCode,
+    bubbles: true,
+    cancelable: true
+  })
+  element.dispatchEvent(keydownEvent)
+
+  const inputEvent = new InputEvent("input", {
+    bubbles: true,
+    cancelable: true,
+    data: char,
+    inputType: "insertText"
+  })
+
+  element.value += char
+  element.dispatchEvent(inputEvent)
+
+  const keyupEvent = new KeyboardEvent("keyup", {
+    key: char,
+    code: "Key" + char.toUpperCase(),
+    keyCode,
+    charCode: keyCode,
+    which: keyCode,
+    bubbles: true,
+    cancelable: true
+  })
+  element.dispatchEvent(keyupEvent)
 }
 
-// 3. LOGIQUE PRINCIPALE
-window.addEventListener('load', function () {
-    const page_en_cours = window.location.href;
-    
+// Injection des identifiants dans la page ENT
+function inject(login: string, password: string) {
+  const loginInput =
+    document.querySelector<HTMLInputElement>('input[type="text"]') ??
+    (document.getElementById(":r5:") as HTMLInputElement | null)
 
-    if (page_en_cours.includes("/auth/login")) {
-        // Petit délai de sécurité si le framework React est lent à afficher les champs
-        setTimeout(function () {
-            const url = new URL(window.location.href);
-            const params = new URLSearchParams(url.search);
-            const storedLogin = params.get('a');
-            const storedPassword = params.get('b');
+  const passwordInput =
+    document.querySelector<HTMLInputElement>('input[type="password"]') ??
+    (document.getElementById(":r6:") as HTMLInputElement | null)
 
-            if (storedLogin && storedPassword) {
-                // ATTENTION : Les IDs comme ":r5:" sont souvent dynamiques (générés par React/MUI)
-                // Ils risquent de changer à la prochaine mise à jour du site de l'école.
-                // Je recommande de cibler par attribut si possible, sinon on garde vos IDs.
-                
-                var loginInput = document.getElementById(":r5:"); 
-                // Alternative plus robuste si les IDs changent : 
-                // var loginInput = document.querySelector('input[type="text"]') || document.getElementById(":r5:");
+  const submitButton =
+    document.querySelector<HTMLButtonElement>('button[type="submit"]') ??
+    (document.getElementById(":r7:") as HTMLButtonElement | null)
 
-                var passwordInput = document.getElementById(":r6:");
-                // var passwordInput = document.querySelector('input[type="password"]') || document.getElementById(":r6:");
-                
-                var submitButton = document.getElementById(":r7:");
-                // var submitButton = document.querySelector('button[type="submit"]') || document.getElementById(":r7:");
+  if (!loginInput || !passwordInput || !submitButton) {
+    console.error("ENT auto-login: champs introuvables")
+    return
+  }
 
-                if (loginInput && passwordInput && submitButton) {
-                    for (var i = 0; i < storedLogin.length; i++) sendCharacter(loginInput, storedLogin[i]);
-                    for (var i = 0; i < storedPassword.length; i++) sendCharacter(passwordInput, storedPassword[i]);
-                    
-                    // Optionnel : Nettoyer l'URL pour ne pas laisser le mot de passe visible dans l'historique
-                    // window.history.replaceState({}, document.title, window.location.pathname);
-                    
-                    submitButton.click();
-                } else {
-                    console.error("Champs de connexion introuvables (les IDs ont peut-être changé ?)");
-                }
-            }
-        }, 1000); 
-    }
-});
+  // simulation frappe login
+  for (let i = 0; i < login.length; i++) {
+    sendCharacter(loginInput, login[i])
+  }
+
+  // simulation frappe mot de passe
+  for (let i = 0; i < password.length; i++) {
+    sendCharacter(passwordInput, password[i])
+  }
+
+  // soumission formulaire
+  submitButton.click()
+}
+
+// Réception des identifiants envoyés par la page cliente (PeerJS)
+window.addEventListener("message", (event: MessageEvent) => {
+  if (!event.data) return
+
+  // sécurité : on ne traite que les messages attendus
+  if (event.data.type !== "ENT_AUTO_LOGIN") return
+
+  // sécurité : on limite aux pages ENT
+  if (!window.location.href.includes("/auth/login")) return
+
+  const login = event.data.login as string | undefined
+  const password = event.data.password as string | undefined
+
+  if (!login || !password) {
+    console.warn("ENT auto-login: données manquantes")
+    return
+  }
+
+  inject(login, password)
+})
